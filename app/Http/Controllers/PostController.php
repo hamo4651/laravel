@@ -41,7 +41,15 @@ class PostController extends Controller
         //    'description' => 'required|min:10',
         //    'user_id' => 'required'
         // ]);
-        $post = Post::create($request->all());
+        $image_path = null;
+        if ($request->hasFile('image')) {
+            $image_path = time() . '.' . $request->image->extension();
+            $request->image->move(public_path('images/posts'), $image_path);
+        }
+        $request_data = $request->all();
+        $request_data['image'] = $image_path;
+        $post = Post::create($request->except('slug')); 
+        $post = Post::create($request_data);
         return to_route('posts.show', $post);
 
     }
@@ -72,8 +80,16 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post)
     {
-        $data = $request->validated();
-        $post->update($data);
+
+        $image_path = $post->image;
+        if( $request->hasFile('image')) {
+            $image_path = time() .'.'. $request->image->extension();
+            $request->image->move(public_path('images/posts'), $image_path);
+        }
+
+        $request_data = $request->all();
+        $request_data['image'] = $image_path;
+        $post->update($request_data);
 
         return redirect()->route('posts.index');
     }

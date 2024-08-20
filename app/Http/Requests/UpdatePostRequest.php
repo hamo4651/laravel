@@ -27,7 +27,9 @@ class UpdatePostRequest extends FormRequest
              'title' => 'required|min:3',
               Rule::unique("posts")->ignore($this->post),
              'description' => 'required|min:10',
-             'user_id' => 'required'
+             'user_id' => 'required',
+             'image' => 'image|mimes:jpeg,png,jpg'
+
         ];
     }
 }

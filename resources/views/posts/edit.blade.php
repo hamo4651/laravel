@@ -1,12 +1,12 @@
-@extends('layout.app')
+@extends('layouts.app')
 
 @section('title')
     edit Post
 @endsection
 
 
-@section('main')
-    <form action="{{ route('posts.update', $post['id']) }}" method="post">
+@section('content')
+    <form action="{{ route('posts.update', $post['id']) }}" method="post" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="my-3 ">
@@ -21,6 +21,14 @@
             <label for="title" class="form-label">Description</label>
             <input type="text" class="form-control" name="description" value="{{ $post['description'] }}">
             @error('description')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+        </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">Image</label>
+            <input type="file" class="form-control" name="image" >
+            <img src="{{asset('images/posts/'.$post->image)}}" width="50" height="50">
+            @error('image')
                 <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>

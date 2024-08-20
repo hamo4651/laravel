@@ -1,11 +1,11 @@
-@extends('layout.app')
+@extends('layouts.app')
 
 @section('title')
      one Post
 @endsection
 
 
-@section('main')
+@section('content')
 
 
 <div class="card">

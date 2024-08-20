@@ -1,4 +1,4 @@
-@extends('layout.app')
+@extends('layouts.app')
 
 @section('title')
 Create
@@ -6,13 +6,13 @@ Create
 @endsection
 
 
-@section('main')
+@section('content')
 
 
 
 
 
-  <form action="{{route('posts.store')}}" method="post" >
+  <form action="{{route('posts.store')}}" method="post" enctype="multipart/form-data">
     @csrf
     <div class="my-3 ">
         <label for="title" class="form-label">Title</label>
@@ -28,6 +28,13 @@ Create
     <div class="alert alert-danger">{{ $message }}</div>
 @enderror
       </div>
+      <div class="mb-3">
+        <label for="image" class="form-label">Image</label>
+        <input type="file" class="form-control" name="image" value="{{old('image') }}">
+        @error('image')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
+    </div>
       <div class="mb-3">
         
         <div class="form-group">

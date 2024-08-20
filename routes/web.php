@@ -23,3 +23,7 @@ Route::get('/buttons', function () {
 Route::resource('posts', PostController::class);
 Route::post('posts/{id}/restore', [PostController::class, 'restore'])->name('posts.restore');
 Route::get('/posts/forceDelete/{id}',[PostController::class,'forceDelete'])->name('posts.forceDelete')->where('id', '[0-9]+');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

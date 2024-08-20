@@ -1,15 +1,11 @@
-@extends('layout.app')
+@extends('layouts.app')
 
 @section('title')
     All Posts
 @endsection
 
 
-@section('main')
-
-{{-- 
-<link rel="stylesheet" href="{{ asset('css/app.css') }}">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> --}}
+@section('content')
 
 <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
@@ -22,6 +18,9 @@
         <th>Posted BY</th>
         <th>Description</th>
         <th>Created At</th>
+        <th>Image</th>
+        <th>Slug</th>
+
         <th>Action </th>
 
     </tr>
@@ -36,8 +35,9 @@
         <td>{{$item->user ? $item->user->name: "None" }}</td>
         <td style="white-space: nowrap;overflow: hidden;max-width: 150px;">{{$item['description']}}</td>
         <td>{{$item['created_at']}}</td>
+        <td><img src="{{asset('images/posts/'.$item->image)}}" width="50" alt="" srcset=""> </td>
 
-       
+        <td>{{ $item->slug }}</td>
 
             @if($item->trashed())
             <td>
