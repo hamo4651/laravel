@@ -1,0 +1,29 @@
+.pagination {
+    justify-content: center;
+    padding: 0;
+}
+.pagination .page-item {
+    margin: 0 2px;
+}
+.pagination .page-link {
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    padding: 8px 16px;
+}
+.pagination .page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+}
+.pagination .page-link:hover {
+    background-color: #0056b3;
+    color: white;
+}
+
+.xx{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+
+}
