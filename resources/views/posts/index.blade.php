@@ -21,7 +21,9 @@
         <th>Image</th>
         <th>Slug</th>
 
-        <th>Action </th>
+        <th>View </th>
+        <th>Edit </th>
+        <th>Delete </th>
 
     </tr>
 </thead>
@@ -41,7 +43,7 @@
 
             @if($item->trashed())
             <td>
-
+ 
             <form action="{{ route('posts.restore', $item->id) }}" method="POST" style="display:inline;">
                 @csrf
                 <button type="submit" class="btn btn-warning">Restore</button>
@@ -50,17 +52,28 @@
 
         @else
           <td>  <a href="{{route('posts.show',$item['id'])}}" class="btn btn-info">Veiw</a></td>
-            <td>  <a href="{{route('posts.edit',$item['id'])}}" class="btn btn-primary">Edit</a></td>
+            <td> 
+                
+           @if (Gate::allows('update-post', $item)) <a href="{{route('posts.edit',$item['id'])}}" class="btn btn-primary">Edit</a>
+            @else
+            un authorized
+            
+            @endif
+            </td>
 
-            <td>   <form action="{{route("posts.destroy",$item)}}" method="post" 
+            <td> 
+                @if (Auth::user() && Auth::user()->can('delete', $item))
+                <form action="{{route("posts.destroy",$item)}}" method="post" 
                 onsubmit="return confirm('Are you sure you want to delete this post?');">
                 @method('delete')
                 @csrf
                 <input type="submit" class="btn btn-danger" value="Delete">
             </form>
+            @else
+            un authorized
             @endif
 
-        </td>
+        </td>  @endif
 
     </tr>
 

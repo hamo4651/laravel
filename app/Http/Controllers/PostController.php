@@ -6,7 +6,8 @@ use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
 use App\Models\User;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -14,6 +15,11 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+     public function __construct()
+     {
+         $this->middleware('auth')->only('show');
+     }
     public function index()
     {
         $posts = Post::withTrashed()->paginate(4);
@@ -48,8 +54,8 @@ class PostController extends Controller
         }
         $request_data = $request->all();
         $request_data['image'] = $image_path;
-        $post = Post::create($request->except('slug')); 
-        $post = Post::create($request_data);
+        $request_data['owner_id']= Auth::id();
+         $post = Post::create($request_data);
         return to_route('posts.show', $post);
 
     }
@@ -81,6 +87,10 @@ class PostController extends Controller
     public function update(UpdatePostRequest $request, Post $post)
     {
 
+        if (! Gate::allows('update-post', $post)) {
+            abort(403);
+        }
+
         $image_path = $post->image;
         if( $request->hasFile('image')) {
             $image_path = time() .'.'. $request->image->extension();
@@ -100,6 +110,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        Gate::authorize('delete', $post);
         $post->delete();
         return to_route('posts.index'); 
     }
